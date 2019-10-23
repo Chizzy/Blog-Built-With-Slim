@@ -1,11 +1,11 @@
 <?php
 // Routes
 
-$app->get('/detail', function ($request, $response, $args) {
+$app->get('/details', function ($request, $response, $args) {
     // Log message
-    $this->logger->info("Details of Entry '/detail' route");
+    $this->logger->info("Details of Entry '/details' route");
     // Render detail view
-    return $this->view->render($response, 'detail.twig', $args);
+    return $this->view->render($response, 'details.twig', $args);
 });
 
 $app->get('/edit', function ($request, $response, $args) {
