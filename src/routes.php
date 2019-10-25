@@ -4,11 +4,11 @@
 use App\Classes\Post;
 use App\Classes\Comment;
 
-$app->get('/details', function ($request, $response, $args) {
+$app->get('/new', function ($request, $response, $args) {
     // Log message
-    $this->logger->info("Details of Entry '/details' route");
-    // Render detail view
-    return $this->view->render($response, 'details.twig', $args);
+    $this->logger->info("New Entry '/new' route");
+    // Render new view
+    return $this->view->render($response, 'new.twig', $args);
 });
 
 $app->get('/edit', function ($request, $response, $args) {
@@ -18,18 +18,20 @@ $app->get('/edit', function ($request, $response, $args) {
     return $this->view->render($response, 'edit.twig', $args);
 });
 
-$app->get('/new', function ($request, $response, $args) {
+$app->get('/{post_title}', function ($request, $response, $args) {
     // Log message
-    $this->logger->info("New Entry '/new' route");
-    // Render new view
-    return $this->view->render($response, 'new.twig', $args);
+    $this->logger->info("Details of Entry '/details' route");
+    $post = new Post($this->db);
+    $singlePost = $post->getSinglePost($args['post_title']);
+    // Render detail view
+    return $this->view->render($response, 'details.twig', ['post' => $singlePost]);
 });
 
 $app->get('/', function ($request, $response, $args) {
     // Log message
     $this->logger->info("Home'/' route");
     $post = new Post($this->db);
-    $posts = $post->getAllPosts();
+    $allPosts = $post->getAllPosts();
     // Render home view
-    return $this->view->render($response, 'home.twig', ['posts' => $posts]);
+    return $this->view->render($response, 'home.twig', ['posts' => $allPosts]);
 });

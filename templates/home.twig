@@ -8,7 +8,7 @@
             <div class="entry-list">
                 {% for post in posts %}
                 <article>
-                    <h2><a href="/details">{{ post.title }}</a></h2>
+                    <h2><a href="/{{ post.title|lower|replace({' ':'-'}) }}">{{ post.title|title }}</a></h2>
                     <time datetime="{{ post.date }}">{{ post.date|date('F d, Y \\a\\t  g:i') }}</time>
                 </article>
                 {% endfor %}
