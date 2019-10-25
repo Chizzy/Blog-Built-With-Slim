@@ -18,7 +18,7 @@ return [
         // Database to access
         'db' => [
             'dsn' => 'sqlite',
-            'database' => __DIR__ . '/include/blog.db',
+            'database' => __DIR__ . '/blog.db',
         ],
     ],
 ];

@@ -6,22 +6,12 @@
     <section>
         <div class="container">
             <div class="entry-list">
+                {% for post in posts %}
                 <article>
-                    <h2><a href="/details">The best day I’ve ever had</a></h2>
-                    <time datetime="2016-01-31 1:00">January 31, 2016 at 1:00</time>
+                    <h2><a href="/details">{{ post.title }}</a></h2>
+                    <time datetime="{{ post.date }}">{{ post.date|date('F d, Y \\a\\t  g:i') }}</time>
                 </article>
-                <article>
-                    <h2><a href="/details">The absolute worst day I’ve ever had</a></h2>
-                    <time datetime="2016-01-31 1:00">January 31, 2016 at 1:00</a></time>
-                </article>
-                <article>
-                    <h2><a href="/details">That time at the mall</a></h2>
-                    <time datetime="2016-01-31 1:00">January 31, 2016 at 1:00</a></time>
-                </article>
-                <article>
-                    <h2><a href="/details">Dude, where’s my car?</a></h2>
-                    <time datetime="2016-01-31 1:00">January 31, 2016 at 1:00</a></time>
-                </article>
+                {% endfor %}
             </div>
         </div>
     </section>

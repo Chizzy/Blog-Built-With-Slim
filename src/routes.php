@@ -1,6 +1,9 @@
 <?php
 // Routes
 
+use App\Classes\Post;
+use App\Classes\Comment;
+
 $app->get('/details', function ($request, $response, $args) {
     // Log message
     $this->logger->info("Details of Entry '/details' route");
