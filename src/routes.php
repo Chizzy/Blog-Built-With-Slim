@@ -23,8 +23,10 @@ $app->get('/{post_title}', function ($request, $response, $args) {
     $this->logger->info("Details of Entry '/details' route");
     $post = new Post($this->db);
     $singlePost = $post->getSinglePost($args['post_title']);
+    $comment = new Comment($this->db);
+    $comments = $comment->getCommentsForPost($singlePost['id']);
     // Render detail view
-    return $this->view->render($response, 'details.twig', ['post' => $singlePost]);
+    return $this->view->render($response, 'details.twig', ['post' => $singlePost, 'comments' => $comments]);
 });
 
 $app->get('/', function ($request, $response, $args) {

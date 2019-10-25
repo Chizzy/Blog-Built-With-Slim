@@ -2,21 +2,28 @@
 
 namespace App\Classes;
 
+use Exception;
+
 class Comment
 {
-    // database connection passed on construction
-    private $db;
-    // array of comment objects
-    public $comments = [];
+    protected $db;
 
-    /**
-     * Comment constructor
-     *
-     * @param PDO $db connection to the database
-     */
-    public function __construct($db)
+    public function __construct(\PDO $db)
     {
-        // set $db property
         $this->db = $db;
+    }
+
+    public function getCommentsForPost($id)
+    {
+        $sql = 'SELECT * FROM comments WHERE post_id = ? ORDER BY id DESC';
+        try {
+            $results = $this->db->prepare($sql);
+            $results->bindValue(1, $id, \PDO::PARAM_INT);
+            $results->execute();
+        } catch (Exception $e) {
+            echo 'ERROR!: ' . $e->getMessage() . '😕 <br>';
+            return false;
+        }
+        return $results->fetchAll();
     }
 }

@@ -9,7 +9,7 @@
                 {% for post in posts %}
                 <article>
                     <h2><a href="/{{ post.title|lower|replace({' ':'-'}) }}">{{ post.title|title }}</a></h2>
-                    <time datetime="{{ post.date }}">{{ post.date|date('F d, Y \\a\\t  g:i') }}</time>
+                    <time datetime="{{ post.date }}">{{ post.date|date('F d, Y \\a\\t  g:i a') }}</time>
                 </article>
                 {% endfor %}
             </div>
