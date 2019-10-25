@@ -25,6 +25,8 @@ $app->get('/new', function ($request, $response, $args) {
 $app->get('/', function ($request, $response, $args) {
     // Log message
     $this->logger->info("Home'/' route");
+    $post = new Post($this->db);
+    $posts = $post->getAllPosts();
     // Render home view
-    return $this->view->render($response, 'home.twig', $args);
+    return $this->view->render($response, 'home.twig', ['posts' => $posts]);
 });
