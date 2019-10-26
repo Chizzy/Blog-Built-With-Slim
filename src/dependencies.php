@@ -3,10 +3,25 @@
 
 $container = $app->getContainer();
 
+// csrf
+$container['csrf'] = function($c) {
+    $guard = new \Slim\Csrf\Guard;
+    $guard->setPersistentTokenMode(true);
+    return $guard;
+};
+
 // view renderer
 $container['view'] = function ($c) {
     $settings = $c->get('settings')['renderer'];
-    $view = new \Slim\Views\Twig($settings['template_path']);
+    $view = new \Slim\Views\Twig($settings['template_path'], [
+        'debug' => true
+    ]);
+    $view->addExtension(new \Slim\Views\TwigExtension(
+        $c['router'],
+        $c['request']->getUri()
+    ));
+    // allows the use of {{ dump() }}
+    $view->addExtension(new \Twig_Extension_Debug());
     return $view;
 };
 

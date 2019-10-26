@@ -1,20 +1,23 @@
-{% extends 'base.twig' %}
+{% extends 'layout.twig' %}
 
 {% block title %}New{% endblock %}
 
-{% block content %}
+{% block body %}
     <section>
         <div class="container">
             <div class="new-entry">
-                <h2>Publish New Entry</h2>
-                <form>
-                    <label for="title"> Title</label>
-                    <input type="text" name="title"><br>
-                    <label for="entry">Entry</label>
-                    <textarea rows="5" name="entry"></textarea>
-                    <input type="submit" value="Publish Entry" class="button">
+                <h2>Publish New Post</h2>
+                <form method="POST" action="{{ addPost }}">
+                    {% import 'form.twig' as form %}
+                    {{ form.input('title', post.title) }}
+                    {{ form.textarea('body', post.body ) }}
+                    <input type="submit" value="Publish Post" class="button">
                     <a href="/" class="button button-secondary">Cancel</a>
+                    {% for key, value in csrf %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}">
+                    {% endfor %}
                 </form>
+                {{ dump(csrf) }}
             </div>
         </div>
     </section>
