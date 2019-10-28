@@ -1,9 +1,9 @@
 {% macro input(name, value, type) %}
-    <label for="{{ name }}">{{ name|title }}</label>
+    <label for="{{ name }}">{{ name|title }}*</label>
     <input type="{{ type|default('text') }}" id="{{ name }}" name="{{ name }}" value="{{ value|e }}"><br>
 {% endmacro %}
 
 {% macro textarea(name, value, rows = 5, help) %}
-    <label for="{{ name }}">{{ name|title }}</label>
+    <label for="{{ name }}">{{ name|title }}*</label>
     <textarea rows="{{ rows }}" id="{{ name }}" name="{{ name }}">{{ value|e }}</textarea>
 {% endmacro %}

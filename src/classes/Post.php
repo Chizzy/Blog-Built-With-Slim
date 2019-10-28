@@ -25,12 +25,14 @@ class Post
 
     public function addPost($title, $body)
     {
-        $timestamp = date('F d, Y  g:i a');
-        $sql = 'INSERT INTO posts (title, date, body) VALUES (?, ' . $timestamp . ', ?)';
+        date_default_timezone_set('America/New_York');
+        $timestamp = date('Y-m-d g:i a');
+        $sql = 'INSERT INTO posts (title, date, body) VALUES (?, ?, ?)';
         try {
             $results = $this->db->prepare($sql);
             $results->bindValue(1, strtolower($title), \PDO::PARAM_STR );
-            $results->bindValue(2, $body, \PDO::PARAM_STR);
+            $results->bindValue(2, $timestamp, \PDO::PARAM_STR);
+            $results->bindValue(3, $body, \PDO::PARAM_STR);
             $results->execute();
         } catch (Exception $e) {
             echo 'ERROR!: ' . $e->getMessage() . ' 😕 <br>';

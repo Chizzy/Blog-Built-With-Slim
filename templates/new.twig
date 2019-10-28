@@ -7,6 +7,9 @@
         <div class="container">
             <div class="new-entry">
                 <h2>Publish New Post</h2>
+                {% if error is defined %}
+                    <div class="alert alert-danger">ERROR!: {{ error }}</div>
+                {% endif %}
                 <form method="POST" action="{{ addPost }}">
                     {% import 'form.twig' as form %}
                     {{ form.input('title', post.title) }}
@@ -17,7 +20,6 @@
                         <input type="hidden" name="{{ key }}" value="{{ value }}">
                     {% endfor %}
                 </form>
-                {{ dump(csrf) }}
             </div>
         </div>
     </section>

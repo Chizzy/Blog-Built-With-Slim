@@ -22,9 +22,10 @@ $app->map(['GET', 'POST'], '/new', function ($request, $response, $args) {
         $nameKey => $request->getAttribute($nameKey),
         $valueKey => $request->getAttribute($valueKey)
     ];
-    var_dump($args);
+    $args['addPost'] = './new';
+    $args['post'] = $_POST;
     $this->logger->info("New Entry '/new' route");
-    return $this->view->render($response, 'new.twig', ['addPost' => './new', 'post' => $_POST]);
+    return $this->view->render($response, 'new.twig', $args);
 })->setName('addPost');
 
 $app->get('/edit', function ($request, $response, $args) {
@@ -36,18 +37,21 @@ $app->get('/{post_title}', function ($request, $response, $args) {
     $this->logger->info("Details of Entry '/details' route");
     $post = new Post($this->db);
     $singlePost = $post->getSinglePost($args['post_title']);
+    $args['post'] = $singlePost;
     $comment = new Comment($this->db);
     $comments = $comment->getCommentsForPost($singlePost['id']);
+    $args['comments'] = $comments;
     if (empty($singlePost)) {
         $url = $this->router->pathFor('home');
         return $response->withStatus(302)->withHeader('Location', $url);
     }
-        return $this->view->render($response, 'details.twig', ['post' => $singlePost, 'comments' => $comments]);
+        return $this->view->render($response, 'details.twig', $args);
 });
 
 $app->get('/', function ($request, $response, $args) {
     $this->logger->info("Home'/' route");
     $post = new Post($this->db);
     $allPosts = $post->getAllPosts();
-    return $this->view->render($response, 'home.twig', ['posts' => $allPosts]);
+    $args['posts'] = $allPosts;
+    return $this->view->render($response, 'home.twig', $args);
 })->setName('home');
