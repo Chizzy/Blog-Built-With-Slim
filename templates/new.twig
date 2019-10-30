@@ -4,13 +4,13 @@
 
 {% block body %}
     <section>
-        <div class="container">
+        <div class="content">
             <div class="new-entry">
                 <h2>Publish New Post</h2>
                 {% if error is defined %}
                     <div class="alert alert-danger">ERROR!: {{ error }}</div>
                 {% endif %}
-                <form method="POST" action="{{ addPost }}">
+                <form method="POST" action="/posts/new">
                     {% import 'form.twig' as form %}
                     {{ form.input('title', post.title) }}
                     {{ form.textarea('body', post.body ) }}

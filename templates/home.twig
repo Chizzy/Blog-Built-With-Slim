@@ -4,11 +4,11 @@
 
 {% block body %}
     <section>
-        <div class="container">
+        <div class="content">
             <div class="entry-list">
                 {% for post in posts %}
                 <article>
-                    <h2><a href="/{{ post.title|lower|replace({' ':'-'}) }}">{{ post.title|title }}</a></h2>
+                    <h2><a href="/posts/{{ post.id }}/{{ post.title|lower|replace({' ':'-'}) }}">{{ post.title|title }}</a></h2>
                     <time datetime="{{ post.date }}">{{ post.date|date('F d, Y \\a\\t  g:i a') }}</time>
                 </article>
                 {% endfor %}

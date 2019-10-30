@@ -4,21 +4,21 @@
 
 {% block body %}
     <section>
-        <div class="container">
+        <div class="content">
             <div class="entry-list single">
                 <article>
                     <h1>{{ post.title|title }}</h1>
                     <time datetime="{{ post.date }}">{{ post.date|date('F d, Y \\a\\t  g:i a') }}</time>
                     <div class="entry">
                         <p>{{ post.body }}</p>
-                        <p><a class="link" href="/edit">Edit Entry</a></p>
+                        <p><a class="link" href="/posts/{{ post.id }}/edit">Edit Entry</a></p>
                     </div>
                 </article>
             </div>
         </div>
     </section>
     <section class="entry-comments">
-        <div class="container">
+        <div class="content">
             <h2>Comments</h2>
             {% for comment in comments %}
             <div class="comment">

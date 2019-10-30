@@ -10,10 +10,11 @@ body {
 	font-family: 'Noto Serif', Georgia, serif;
 	background: #444;
 }
-.container {
+.content {
 	margin: 0 auto;
 	padding: 0 25px;
 	background: #FFF;
+	width: 100%;
 }
 header .site-header {
 	border-bottom: 1px solid #d1d1d1;
@@ -176,12 +177,12 @@ a.link {
 	background: #f1f1f1;
 	padding: 70px 0;
 }
-.entry-comments .container {
+.entry-comments .content {
 	background: transparent;
 }
-.entry-comments .container,
-.edit-entry .container,
-.new-entry .container {
+.entry-comments .content,
+.edit-entry .content,
+.new-entry .content {
 	max-width: 700px;
 	margin: 0 auto;
 }
@@ -201,7 +202,7 @@ a.link {
 	font-size: 14px;
 	margin: 3px 0 20px 0;
 }
-.new-comment .container {
+.new-comment .content {
 	max-width: 700px;
 	margin: 0 auto;
 }
@@ -261,17 +262,3 @@ form textarea:hover {
 input[type=submit] {
 	margin-right: 5px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
