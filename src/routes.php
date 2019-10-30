@@ -15,16 +15,19 @@ $app->map(['GET', 'POST'], '/posts/new', function ($request, $response, $args) {
         }
         $args['error'] = 'All fields required.';
     }
+
     $nameKey = $this->csrf->getTokenNameKey();
     $valueKey = $this->csrf->getTokenValueKey();
     $args['csrf'] = [
         $nameKey => $request->getAttribute($nameKey),
         $valueKey => $request->getAttribute($valueKey)
     ];
+    
     $args['post'] = $_POST;
     $this->logger->info("New Entry '/new' route");
     return $this->view->render($response, 'new.twig', $args);
 })->setName('addPost');
+
 
 $app->map(['GET', 'PUT'], '/posts/{id}/edit', function ($request, $response, $args) {
     if ($request->getMethod() == 'PUT') {
@@ -41,21 +44,39 @@ $app->map(['GET', 'PUT'], '/posts/{id}/edit', function ($request, $response, $ar
         }
         $args['error'] = 'All fields required.';
     }
+
     $nameKey = $this->csrf->getTokenNameKey();
     $valueKey = $this->csrf->getTokenValueKey();
     $args['csrf'] = [
         $nameKey => $request->getAttribute($nameKey),
         $valueKey => $request->getAttribute($valueKey)
     ];
-    $this->logger->info("Edit Entry '/edit' route");
+
+    $this->logger->info("Edit Post '/edit' route");
     $post = new Post($this->db);
     $singlePost = $post->getSinglePost($args['id']);
     $args['post'] = $singlePost;
     return $this->view->render($response, 'edit.twig', $args);
 });
 
-$app->get('/posts/{id}/{post_title}', function ($request, $response, $args) {
-    $this->logger->info("Details of Entry '/details' route");
+
+$app->map(['GET', 'DELETE'], '/posts/{id}/{post_title}', function ($request, $response, $args) {
+    if ($request->getMethod() == 'DELETE') {
+        $this->logger->info("Delete Post route");
+        $post = new Post($this->db);
+        $post->deletePost($args['id']);
+        $url = $this->router->pathFor('home');
+        return $response->withStatus(302)->withHeader('Location', $url);
+    }
+
+    $nameKey = $this->csrf->getTokenNameKey();
+    $valueKey = $this->csrf->getTokenValueKey();
+    $args['csrf'] = [
+        $nameKey => $request->getAttribute($nameKey),
+        $valueKey => $request->getAttribute($valueKey)
+    ];
+
+    $this->logger->info("Details of Post '/details' route");
     $post = new Post($this->db);
     $singlePost = $post->getSinglePost($args['id']);
     $args['post'] = $singlePost;
@@ -68,6 +89,7 @@ $app->get('/posts/{id}/{post_title}', function ($request, $response, $args) {
     }
         return $this->view->render($response, 'details.twig', $args);
 })->setName('singlePost');
+
 
 $app->get('/', function ($request, $response, $args) {
     $this->logger->info("Home'/' route");

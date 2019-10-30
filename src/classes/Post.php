@@ -73,4 +73,18 @@ class Post
         }
         return true;
     }
+
+    public function deletePost($id)
+    {
+        $sql = 'DELETE FROM posts WHERE id = ?';
+        try {
+            $results = $this->db->prepare($sql);
+            $results->bindValue(1, $id, \PDO::PARAM_INT);
+            $results->execute();
+        } catch (Exception $e) {
+            echo 'ERROR!: ' . $e->getMessage() . '😕 <br>';
+            return false;
+        }
+        return true;
+    }
 }
