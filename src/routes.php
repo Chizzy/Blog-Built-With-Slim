@@ -81,6 +81,7 @@ $app->map(['GET', 'POST', 'DELETE'], '/posts/{id}/{post_title}', function ($requ
     if ($request->getMethod() == 'DELETE') {
         $this->logger->info("Delete Post route");
         $post->deletePost($args['id']);
+        $comment->deleteCommentPost($args['id']);
         $url = $this->router->pathFor('home');
         return $response->withStatus(302)->withHeader('Location', $url);
     }
@@ -102,7 +103,6 @@ $app->map(['GET', 'POST', 'DELETE'], '/posts/{id}/{post_title}', function ($requ
         return $response->withStatus(302)->withHeader('Location', $url);
     }
         $args['save'] = $_POST;
-        var_dump($args);
         return $this->view->render($response, 'details.twig', $args);
 })->setName('singlePost');
 

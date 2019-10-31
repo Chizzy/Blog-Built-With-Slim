@@ -45,4 +45,18 @@ class Comment
         }
         return true;
     }
+
+    public function deleteCommentPost($id)
+    {
+        $sql = 'DELETE FROM comments WHERE post_id = ?';
+        try {
+            $results = $this->db->prepare($sql);
+            $results->bindValue(1, $id, \PDO::PARAM_INT);
+            $results->execute();
+        } catch (Exception $e) {
+            echo 'ERROR!: ' . $e->getMessage() . '😕 <br>';
+            return false;
+        }
+        return true;
+    }
 }
