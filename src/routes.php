@@ -22,11 +22,11 @@ $app->map(['GET', 'POST'], '/posts/new', function ($request, $response, $args) {
         $nameKey => $request->getAttribute($nameKey),
         $valueKey => $request->getAttribute($valueKey)
     ];
-    
-    $args['post'] = $_POST;
+
+    $args['save'] = $_POST;
     $this->logger->info("New Entry '/new' route");
     return $this->view->render($response, 'new.twig', $args);
-})->setName('addPost');
+});
 
 
 $app->map(['GET', 'PUT'], '/posts/{id}/edit', function ($request, $response, $args) {
@@ -60,10 +60,26 @@ $app->map(['GET', 'PUT'], '/posts/{id}/edit', function ($request, $response, $ar
 });
 
 
-$app->map(['GET', 'DELETE'], '/posts/{id}/{post_title}', function ($request, $response, $args) {
+$app->map(['GET', 'POST', 'DELETE'], '/posts/{id}/{post_title}', function ($request, $response, $args) {
+    $post = new Post($this->db);
+    $comment = new Comment($this->db);
+
+    if ($request->getMethod() == 'POST') {
+        $args = array_merge($args, $request->getParsedBody());
+        if (!empty($args['name']) && !empty($args['body'])) {
+            $this->logger->notice(json_encode([$args['name'], $args['body']]));
+            $comment->addComment($args['name'], $args['body'], $args['id']);
+            $url = $this->router->pathFor( 
+                'singlePost', 
+                ['id' => $args['id'], 'post_title' => $args['post_title']]
+            );
+            return $response->withStatus(302)->withHeader('Location', $url);
+        }
+        $args['error'] = 'All fields required.';
+    }
+    
     if ($request->getMethod() == 'DELETE') {
         $this->logger->info("Delete Post route");
-        $post = new Post($this->db);
         $post->deletePost($args['id']);
         $url = $this->router->pathFor('home');
         return $response->withStatus(302)->withHeader('Location', $url);
@@ -77,16 +93,16 @@ $app->map(['GET', 'DELETE'], '/posts/{id}/{post_title}', function ($request, $re
     ];
 
     $this->logger->info("Details of Post '/details' route");
-    $post = new Post($this->db);
     $singlePost = $post->getSinglePost($args['id']);
     $args['post'] = $singlePost;
-    $comment = new Comment($this->db);
     $comments = $comment->getCommentsForPost($singlePost['id']);
     $args['comments'] = $comments;
     if (empty($singlePost)) {
         $url = $this->router->pathFor('home');
         return $response->withStatus(302)->withHeader('Location', $url);
     }
+        $args['save'] = $_POST;
+        var_dump($args);
         return $this->view->render($response, 'details.twig', $args);
 })->setName('singlePost');
 

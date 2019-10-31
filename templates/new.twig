@@ -12,8 +12,8 @@
                 {% endif %}
                 <form method="POST" action="/posts/new">
                     {% import 'form.twig' as form %}
-                    {{ form.input('title', post.title) }}
-                    {{ form.textarea('body', post.body ) }}
+                    {{ form.input('title', save.title) }}
+                    {{ form.textarea('body', save.body ) }}
                     <input type="submit" value="Publish Post" class="button">
                     <a href="/" class="button button-secondary">Cancel</a>
                     {% for key, value in csrf %}
