@@ -11,6 +11,22 @@ class Tag
         $this->db = $db;
     }
 
+    public function getAllTags()
+    {
+        $sql = 'SELECT name FROM tags';
+        try {
+            $tags = [];
+            $results = $this->db->query($sql)->fetchAll();
+            foreach ($results as $result) {
+                $tags[] = $result['name'];
+            }
+            return $tags;
+        } catch (Exception $e) {
+            echo 'ERROR!: ' . $e->getMessage() . ' 😕 <br>';
+            return [];
+        }
+    }
+
     public function getTagWithPosts($name)
     {
         $sql = 'SELECT posts.id, posts.title, posts.date, tags.name

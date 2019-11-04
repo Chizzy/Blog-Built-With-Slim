@@ -25,6 +25,8 @@ $app->map(['GET', 'POST'], '/posts/new', function ($request, $response, $args) {
     ];
 
     $args['save'] = $_POST;
+    $tag = new Tag($this->db);
+    $args['tags'] = $tag->getAllTags();
     $this->logger->info("New Entry '/new' route");
     return $this->view->render($response, 'new.twig', $args);
 });
