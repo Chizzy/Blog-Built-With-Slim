@@ -2,6 +2,7 @@
 
 use App\Classes\Post;
 use App\Classes\Comment;
+use App\Classes\Tag;
 
 $app->map(['GET', 'POST'], '/posts/new', function ($request, $response, $args) {
     if ($request->getMethod() == 'POST') {
@@ -106,6 +107,14 @@ $app->map(['GET', 'POST', 'DELETE'], '/posts/{id}/{post_title}', function ($requ
         return $this->view->render($response, 'details.twig', $args);
 })->setName('singlePost');
 
+
+$app->get('/tags/{name}', function ($request, $response, $args) {
+    $this->logger->info("{name} tag route");
+    $tag = new Tag($this->db);
+    $tagWithPosts = $tag->getTagWithPosts($args['name']);
+    $args['posts'] = $tagWithPosts;
+    return $this->view->render($response, 'tags.twig', $args);
+});
 
 $app->get('/', function ($request, $response, $args) {
     $this->logger->info("Home'/' route");

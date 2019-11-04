@@ -2,8 +2,6 @@
 
 namespace App\Classes;
 
-use Exception;
-
 class Comment
 {
     protected $db;

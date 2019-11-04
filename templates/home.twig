@@ -3,6 +3,11 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
+    <style>
+      .badge {
+          font-size: 1em;
+      }
+    </style>
     <section>
         <div class="content">
             <div class="entry-list">
@@ -10,6 +15,14 @@
                 <article>
                     <h2><a href="/posts/{{ post.id }}/{{ post.title|lower|replace({' ':'-'}) }}">{{ post.title|title }}</a></h2>
                     <time datetime="{{ post.date }}">{{ post.date|date('F d, Y \\a\\t  g:i a') }}</time>
+                    {% if post.name is not empty %}
+                        {% set tags = post.name|split(' ') %}
+                        <div>
+                            {% for tag in tags %}
+                                <p class="badge badge-pill badge-secondary"><a href="/tags/{{ tag }}">{{ tag }}</a></p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </article>
                 {% endfor %}
             </div>

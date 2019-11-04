@@ -13,7 +13,10 @@ class Post
 
     public function getAllPosts()
     {
-        $sql = 'SELECT * FROM posts ORDER BY date DESC';
+        $sql = "SELECT posts.id, posts.title, posts.date, GROUP_CONCAT(tags.name, ' ') AS name FROM posts 
+                    LEFT OUTER JOIN posts_to_tags ON posts.id = posts_to_tags.post_id
+                    LEFT OUTER JOIN tags ON posts_to_tags.tag_id = tags.id 
+                    GROUP BY posts.id ORDER BY date DESC";
         try {
             $results = $this->db->query($sql);
             return $results->fetchAll();
