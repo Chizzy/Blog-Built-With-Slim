@@ -3,6 +3,13 @@
 {% block title %}{{ post.title|title }}{% endblock %}
 
 {% block body %}
+    <style>
+        .tags {
+            display: flex;
+            justify-content: center;
+            justify-content: space-evenly;
+        }
+    </style>
     <section>
         <div class="content">
             <div class="entry-list single">
@@ -11,6 +18,14 @@
                     <time datetime="{{ post.date }}">{{ post.date|date('F d, Y \\a\\t  g:i a') }}</time>
                     <div class="entry">
                         <p>{{ post.body }}</p>
+                       {% if tags is not null %}
+                        <div class="tags">
+                            {% for tag in tags %}
+                                <p class="badge badge-pill badge-secondary"><a href="/tags/{{ tag.name }}">{{ tag.name }}</a></p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
                         <p><a class="link" href="/posts/{{ post.id }}/edit">Edit Entry</a></p>
                     </div>
                     <form method="POST" action="/posts/{{ post.id }}/{{ post.title|lower|replace({' ':'-'}) }}" onsubmit="return confirm('Are you sure you want to delete this post?')">

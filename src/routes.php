@@ -9,8 +9,8 @@ $app->map(['GET', 'POST'], '/posts/new', function ($request, $response, $args) {
         $args = array_merge($args, $request->getParsedBody());
         if (!empty($args['title']) && !empty($args['body'])) {
             $post = new Post($this->db);
-            $this->logger->notice(json_encode([$args['title'], $args['body']]));
-            $post->addPost($args['title'], $args['body']);
+            $this->logger->notice(json_encode([$args['title'], $args['body'], $args['tags']]));
+            $post->addPost($args['title'], $args['body'], $args['tags']);
             $url = $this->router->pathFor('home');
             return $response->withStatus(302)->withHeader('Location', $url);
         }
@@ -24,9 +24,9 @@ $app->map(['GET', 'POST'], '/posts/new', function ($request, $response, $args) {
         $valueKey => $request->getAttribute($valueKey)
     ];
 
-    $args['save'] = $_POST;
     $tag = new Tag($this->db);
     $args['tags'] = $tag->getAllTags();
+    $args['save'] = $_POST;
     $this->logger->info("New Entry '/new' route");
     return $this->view->render($response, 'new.twig', $args);
 });
@@ -37,8 +37,8 @@ $app->map(['GET', 'PUT'], '/posts/{id}/edit', function ($request, $response, $ar
         $args = array_merge($args, $request->getParsedBody());
         if (!empty($args['title']) && !empty($args['body'])) {
             $post = new Post($this->db);
-            $this->logger->notice(json_encode([$args['title'], $args['body']]));
-            $post->editPost($args['id'], $args['title'], $args['body']);
+            $this->logger->notice(json_encode([$args['title'], $args['body'], $args['tags']]));
+            $post->editPost($args['id'], $args['title'], $args['body'], $args['tags']);
             $url = $this->router->pathFor(
                 'singlePost', 
                 ['id' => $args['id'], 'post_title' => strtolower(str_replace(' ', '-', $args['title']))]
@@ -59,6 +59,12 @@ $app->map(['GET', 'PUT'], '/posts/{id}/edit', function ($request, $response, $ar
     $post = new Post($this->db);
     $singlePost = $post->getSinglePost($args['id']);
     $args['post'] = $singlePost;
+    $tag = new Tag($this->db);
+    $args['tags'] = $tag->getAllTags();
+    $selectedTags = $tag->getTagsForPost($args['id']);
+    foreach ($selectedTags as $select) {
+        $args['selected'][] = $select['name'];
+    }
     return $this->view->render($response, 'edit.twig', $args);
 });
 
@@ -66,6 +72,7 @@ $app->map(['GET', 'PUT'], '/posts/{id}/edit', function ($request, $response, $ar
 $app->map(['GET', 'POST', 'DELETE'], '/posts/{id}/{post_title}', function ($request, $response, $args) {
     $post = new Post($this->db);
     $comment = new Comment($this->db);
+    $tags = new Tag($this->db);
 
     if ($request->getMethod() == 'POST') {
         $args = array_merge($args, $request->getParsedBody());
@@ -101,6 +108,7 @@ $app->map(['GET', 'POST', 'DELETE'], '/posts/{id}/{post_title}', function ($requ
     $args['post'] = $singlePost;
     $comments = $comment->getCommentsForPost($singlePost['id']);
     $args['comments'] = $comments;
+    $args['tags'] = $tags->getTagsForPost($singlePost['id']);
     if (empty($singlePost)) {
         $url = $this->router->pathFor('home');
         return $response->withStatus(302)->withHeader('Location', $url);

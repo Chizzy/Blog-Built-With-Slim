@@ -45,4 +45,21 @@ class Tag
         }
         return $results->fetchAll();
     }
+
+    public function getTagsForPost($id)
+    {
+        $sql = 'SELECT tags.name FROM tags 
+                    LEFT OUTER JOIN posts_to_tags ON tags.id = posts_to_tags.tag_id
+                    LEFT OUTER JOIN posts ON posts_to_tags.post_id = posts.id
+                    WHERE posts_to_tags.post_id = ?';
+        try {
+            $results = $this->db->prepare($sql);
+            $results->bindValue(1, $id, \PDO::PARAM_INT);
+            $results->execute();
+        } catch (Exception $e) {
+            echo 'ERROR!: ' . $e->getMessage() . '😕 <br>';
+            return false;
+        }
+        return $results->fetchAll();
+    }
 }

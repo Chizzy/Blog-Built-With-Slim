@@ -3,6 +3,28 @@
 {% block title %}New{% endblock %}
 
 {% block body %}
+    <style>
+        form select, .select2-container {
+            border: 2px solid #e1e1e1;
+            font-size: 18px;
+            line-height: 1.8em;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        form select:focus, .select2-container:focus {
+            outline: 0;
+            border-color: #b1b1b1;
+        }
+        form select:hover, .select2-container:hover {
+            border-color: #b1b1b1;
+        }
+        .select2-container .selection .select2-selection {
+            border: none;
+        }
+        .select2-container .select2-container--default .select2-container--open {
+            border: none;
+        }
+    </style>
     <section>
         <div class="content">
             <div class="new-entry">
@@ -15,9 +37,9 @@
                     {{ form.input('title', save.title) }}
                     {{ form.textarea('body', save.body ) }}
                     <label for="tags">Tags</label>
-                    <select id="tags" name="tags" class="form-control" multiple>
+                    <select id="tags" name="tags[]" class="form-control" style="width:calc(100% - 32px)" multiple>
                         {% for tag in tags %}
-                        <option value="{{ tag }}">{{ tag }}</option>
+                            <option value="{{ tag }}" {% if tag in save.tags %}selected{% endif %}>{{ tag }}</option>
                         {% endfor %}
                     </select>
                     <script>
@@ -28,7 +50,7 @@
                             });
                         });
                     </script>
-                    <input type="submit" value="Publish Post" class="button">
+                    <input style="margin-top:3em" type="submit" value="Publish Post" class="button">
                     <a href="/" class="button button-secondary">Cancel</a>
                     {% for key, value in csrf %}
                         <input type="hidden" name="{{ key }}" value="{{ value }}">
