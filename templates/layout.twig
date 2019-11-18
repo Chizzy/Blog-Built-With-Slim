@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>{% block title %}{% endblock %} | SparkBlog 💡</title>
-        <link href='https://fonts.googleapis.com/css?family=Noto+Serif:400,400italic,700|Noto+Sans:700,400' rel='stylesheet' type='text/css'>
+        <title>{% block title %}{% endblock %} | Jot It 💡</title>
+        <link href="https://fonts.googleapis.com/css?family=Knewave|Special+Elite&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/normalize.css">
@@ -12,14 +12,22 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+        <style>
+            .content {
+                background-image: url('/images/old-paper.jpg');
+                background-position: center;
+            }
+            .site-header {
+                background: #9a5807;
+                width: 100%;
+            }
+        </style> 
     </head>
     <body>
         <header>
-            <div class="content">
-                <div class="site-header">
-                    <a class="logo" href="/">SparkBlog 💡</a>
-                    <a class="new-entry button button-round" href="/posts/new"><i class="material-icons">create</i></a>
-                </div>
+            <div class="site-header">
+                <a class="logo" href="/">Jot It 💡</a>
+                <a class="new-entry button button-round" href="/posts/new"><i class="material-icons">create</i></a>
             </div>
         </header>
             {% block body %}
